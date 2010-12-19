@@ -3,6 +3,7 @@ module LD19
     include RoomLoader
     attr_reader :terrain
     def initialize(options = {})
+      on_input(:r) { switch_game_state(self.class.new(options)) }
       super
       px, py = *options[:player_pos] || [PlayerStartX, PlayerStartY]
       
@@ -10,8 +11,10 @@ module LD19
       @terrain = load_terrain
       load_props
       load_enemies
+      load_prize
       @player = PlayerSprite.create(:x => px, :y => py, :basic_player => $window.basic_player)      
       @HUD = HUD.create(:player => @player)
+      @ready = true
     end
     
     def update
@@ -40,6 +43,7 @@ module LD19
     end
     
     def draw
+      return unless @ready
       @terrain.each_with_coords do |type,x,y|
         details = TerrainProperties[type]
         next unless details[:image_file]
@@ -54,6 +58,13 @@ module LD19
       grid_x = x_pos / (XFactor * TileWidth)
       grid_y = ((y_pos / YFactor) - MapYOffset) / TileHeight
       @terrain[grid_x,grid_y]
+    end
+    
+    def check_for_prize
+      if @prize and Enemy.size.zero?
+        #Sound['award.ogg'].play
+        Prop.place(@prize)
+      end
     end
     
     private

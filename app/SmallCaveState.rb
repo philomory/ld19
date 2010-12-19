@@ -4,10 +4,38 @@ module LD19
     def initialize(options ={})
       @properties = options
       @font = Font[25]
+      Song.current_song.stop
       super
       @player.x = $window.width / 2
       @player.y = $window.height
-      
+
+      process_message
+      process_gift if @properties[:gift]
+    end
+
+    def draw
+      super
+      @line_index.times do |full_line|
+        @font.draw(@lines[full_line], (2 * TileWidth * XFactor), (((2 + full_line) * TileWidth + MapYOffset) * YFactor),1)
+      end
+      return unless @lines[@line_index]
+      @font.draw(@lines[@line_index][0..@char_index],(2 * TileWidth * XFactor), (((2 + @line_index) * TileWidth + MapYOffset) * YFactor),1)
+    end
+
+    def transition(direction)
+      pop_game_state
+    end
+
+    private
+
+    def process_gift
+      details = @properties[:gift]
+      details[:x] = 7.5
+      details[:y] = 6
+      Prop.place(details)
+    end
+
+    def process_message
       if @properties[:message]
         cave_text_width = $window.width - (4 * TileWidth * XFactor)
         word_array = @properties[:message].upcase.split(' ')
@@ -19,7 +47,7 @@ module LD19
             @lines.push(word)
           end
         end
-        
+
         @message_index = @line_index = @char_index = 0
         every(100, :name => :message_timer) do
           @message_index += 1
@@ -34,26 +62,9 @@ module LD19
           end
         end
       end
-      
-      def draw
-        super
-        @line_index.times do |full_line|
-          @font.draw(@lines[full_line], (2 * TileWidth * XFactor), (((2 + full_line) * TileWidth + MapYOffset) * YFactor),1)
-        end
-        return unless @lines[@line_index]
-        @font.draw(@lines[@line_index][0..@char_index],(2 * TileWidth * XFactor), (((2 + @line_index) * TileWidth + MapYOffset) * YFactor),1)
-      end
-      
     end
     
     
-    
-    
-    def transition(direction)
-      pop_game_state
-    end
-  
-    private
     def load_room_data
       @yml = { 
         :mappings => {'0' => @properties[:base]},

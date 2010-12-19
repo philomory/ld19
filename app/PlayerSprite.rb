@@ -5,11 +5,12 @@ module LD19
     extend Forwardable
     def_delegators(:@basic_player, 
         :health, :health=, :max_health, :max_health=,
-        :damage_taken, :die, :dead?
+        :coins, :coins=, :keys, :get_key, :has_key?,
+        :damage_taken, :die, :dead?, :deciphered
         )
     
     attr_reader :last_x, :last_y
-    trait :bounding_box, :scale => 0.8
+    trait :bounding_box, :scale => 0.6
     traits :collision_detection, :timer
     include TerrainCollision
     
@@ -69,7 +70,7 @@ module LD19
       return if @invincible
       self.health -= 1
       return if dead?
-      Sound["player_ouch.wav"].play
+      Sound["player_ouch.ogg"].play
       flinch
       during(500) {
         @invincible = true

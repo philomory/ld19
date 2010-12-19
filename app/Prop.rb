@@ -5,10 +5,10 @@ module LD19
     def self.place(options = {})
       klass = self.const_get(options[:klass])
       options[:x] *= (TileWidth * XFactor)
+      options[:x] += (TileWidth * XFactor / 2)
       options[:y] *= (TileHeight * YFactor)
       options[:y] += (MapYOffset * YFactor)
-      options[:center_x] ||= 0
-      options[:center_y] ||= 0
+      options[:y] += (TileHeight * YFactor / 2)
       instance = klass.create(options)
       instance.build(options[:properties])
       instance

@@ -9,9 +9,12 @@ module LD19
       unless options[:x] && options[:y]
         self.x,self.y = choose_random_location
         self.x *= (TileWidth * XFactor)
+        self.x += (TileWidth * XFactor / 2)
         self.y *= (TileHeight * YFactor)
         self.y += (MapYOffset * YFactor)
+        self.y += (TileHeight * YFactor / 2)
       end
+      @previous_x, @previous_y = @x, @y
       self.color = options[:color] || Color::RED
       @health = options[:health] || 1
       @animation = Chingu::Animation.new(:file => "blob_16x16.png",:bounce => true)
@@ -22,7 +25,6 @@ module LD19
     def choose_random_location
       available = @parent.terrain.each_with_coords.select {|t,x,y| TerrainProperties[t][:walkable]}
       picked = rand(available.size)
-      p available[picked]
       result = available[picked][1,2]
       result
     end
@@ -54,7 +56,7 @@ module LD19
       @hitby = weapon
       take_damage(1)
       return if dead?
-      Sound["enemy_ouch.wav"].play
+      Sound["enemy_ouch.ogg"].play
       old_color = self.color
       self.color = 0x44FFFFFF
       self.mode = :additive
@@ -72,8 +74,10 @@ module LD19
     
     def die
       @dead = true
-      Sound["enemy_dies.wav"].play
+      Sound["enemy_dies.ogg"].play
+      Prop::Pickup.create_small_pickup(x,y) if rand(2).zero?
       destroy!
+      @parent.check_for_prize
     end
     
     def dead?

@@ -15,4 +15,9 @@
     '0': :stone_wall
 }
 :default: :dirt_floor
+:enemies:
+    - {}
+    - {}
+    - {}
+    - {:color: 0xFF0000FF, :health: 3}
 

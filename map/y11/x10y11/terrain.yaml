@@ -24,8 +24,13 @@
         :properties: {
             :type: :small_cave,
             :base: :stone_wall,
-            :message: "It is dangerous to go alone. Take this.",
+            :message: "Find the keys of ÄKÄTÄ. Bring to peace.",
             :occupant: :old_man,
-            :gift: :talking_pie,
+            :gift: {
+                :klass: Key,
+                :properties: {
+                    :number: 5
+                }
+            },
             :only_once: true
         }

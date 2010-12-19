@@ -2,9 +2,13 @@ module LD19
   class OverworldState < RoomBaseState
     def initialize(options = {})
       @latitude, @longitude = options[:latitude], options[:longitude] # lat = e/w = x, long = n/s = y
-
+      @song = Song['overworld_music.ogg']
       super
-      @enemy = Enemy.create(:x => 400, :y => 400, :health => 2)
+      
+    end
+    
+    def setup
+      @song.play(true) unless @song.playing?
     end
     
     def update
@@ -30,7 +34,7 @@ module LD19
       end
 
       switch_game_state(OverworldState.new(:latitude => lat, :longitude => long, 
-                                           :player_pos => [p_x,p_y], :player => @player))    
+                                           :player_pos => [p_x,p_y], :player => @player))
     end
     
     def cave_transition(destination)

@@ -30,5 +30,10 @@ module LD19
       end
     end
     
+    def load_prize
+      @return unless @yml[:prize]
+      @prize = @yml[:prize]
+    end
+    
   end
 end

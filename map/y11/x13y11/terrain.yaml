@@ -1,6 +1,6 @@
 --- 
 :data: |
-    0000000000000000
+    ...............0
     ...............0
     ...............0
     ...............0
@@ -15,3 +15,14 @@
     '0': :stone_wall
 }
 :default: :grass_floor        
+:enemies:
+    - {:color: 0xFF0000FF, :health: 3}
+    - {:color: 0xFF0000FF, :health: 3}
+:prize: {
+    :klass: Key,
+    :x: 14,
+    :y: 8,
+    :properties: {
+        :number: 2
+    }
+}

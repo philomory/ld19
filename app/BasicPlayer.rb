@@ -1,10 +1,32 @@
 module LD19
   class BasicPlayer < Chingu::BasicGameObject
-    attr_reader :health
-    attr_accessor :max_health
+    attr_reader :health, :coins, :keys, :deciphered
+    attr_accessor :max_health, :max_coins
     def initialize(options = {})
       super
       @health = @max_health = 8
+      @coins = 0
+      @max_coins = 100
+      @keys = Array.new(9)
+      @deciphered = 0
+    end
+    
+    def get_key(key)
+      @keys[key.number-1] = key
+    end
+    
+    def has_key?(num)
+      @keys[num]
+    end
+    
+    def coins=(num)
+      if num > @max_coins
+        @coins = @max_coins
+      elsif num <= 0
+        @coins = 0
+      else
+        @coins = num
+      end
     end
         
     def health=(num)

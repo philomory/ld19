@@ -13,9 +13,10 @@ module LD19
       super(WindowWidth,WindowHeight)
       self.input = {:escape => :exit}
       self.factor = 2
-      #retrofy
+      
+      retrofy rescue nil
       @basic_player = BasicPlayer.new
-      push_game_state(OverworldState.new(:latitude => 11, :longitude => 11))
+      push_game_state(TitleState)
     end
 
   end
