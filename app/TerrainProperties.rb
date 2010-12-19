@@ -18,6 +18,11 @@ module LD19
       :passes_projectiles => true
     },
     
+    :empty_floor => {
+      :walkable => true,
+      :passes_projectiles => true
+    },
+    
     :out_of_bounds => {
       :walkable => false,
       :passes_projectiles => false

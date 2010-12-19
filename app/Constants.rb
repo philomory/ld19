@@ -1,4 +1,7 @@
 module LD19
+  WindowWidth = 512
+  WindowHeight = 480
+  
   XFactor = 2
   YFactor = 2
   
@@ -11,4 +14,10 @@ module LD19
   
   PlayerStartX = (MapTilesWide / 2 * TileWidth) * XFactor
   PlayerStartY = (MapTilesHigh / 2 * TileHeight + MapYOffset) * YFactor
+  
+  PlayerXEntryWest = TileWidth * XFactor
+  PlayerXEntryEast = WindowWidth - PlayerXEntryWest
+  
+  PlayerYEntrySouth = WindowHeight - (TileWidth * YFactor)
+  PlayerYEntryNorth = (MapYOffset + TileHeight) * YFactor
 end

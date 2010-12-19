@@ -1,5 +1,4 @@
-require 'chingu'
-require_relative 'helper'
+
 include Gosu
 #require 'Constants'
 #require 'OverworldState'
@@ -9,11 +8,13 @@ Song.autoload_dirs  << "#{ROOT}/media/music"
 
 module LD19
   class MainWindow < Chingu::Window
+    attr_reader :basic_player
     def initialize
-      super(512,480)
+      super(WindowWidth,WindowHeight)
       self.input = {:escape => :exit}
       self.factor = 2
       #retrofy
+      @basic_player = BasicPlayer.new
       push_game_state(OverworldState.new(:latitude => 11, :longitude => 11))
     end
 

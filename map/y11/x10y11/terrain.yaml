@@ -3,15 +3,29 @@
     0000000000000..0
     0...........0...
     0...........0...
-    0...........0000
-    0..............0
-    0..............0
-    0..............0
+    0..._____...0000
+    0..._000_......0
+    0..._0D0_......0
+    0..._____......0
     0...............
     0...............
     0...............
     0000000000000000    
 :mappings: {
-    '0': :stone_wall
+    '0': :stone_wall,
+    '_': :dirt_floor
 }
-:default: :grass_floor        
+:default: :grass_floor
+:props:
+    - 
+        :x: 6
+        :y: 5
+        :klass: CaveEntrance
+        :properties: {
+            :type: :small_cave,
+            :base: :stone_wall,
+            :message: "It is dangerous to go alone. Take this.",
+            :occupant: :old_man,
+            :gift: :talking_pie,
+            :only_once: true
+        }

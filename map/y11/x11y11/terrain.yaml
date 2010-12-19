@@ -15,4 +15,7 @@
     '0': :stone_wall
 }
 :default: :grass_floor
-
+:enemies:
+    - {}
+    - {}
+    - {}

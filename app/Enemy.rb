@@ -6,11 +6,25 @@ module LD19
     
     def initialize(options ={})
       super
+      unless options[:x] && options[:y]
+        self.x,self.y = choose_random_location
+        self.x *= (TileWidth * XFactor)
+        self.y *= (TileHeight * YFactor)
+        self.y += (MapYOffset * YFactor)
+      end
       self.color = options[:color] || Color::RED
       @health = options[:health] || 1
       @animation = Chingu::Animation.new(:file => "blob_16x16.png",:bounce => true)
       random_walk
       update
+    end
+    
+    def choose_random_location
+      available = @parent.terrain.each_with_coords.select {|t,x,y| TerrainProperties[t][:walkable]}
+      picked = rand(available.size)
+      p available[picked]
+      result = available[picked][1,2]
+      result
     end
     
     def random_walk

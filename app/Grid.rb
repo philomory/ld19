@@ -31,10 +31,14 @@ module LD19
     end
     
     def each_with_coords
-      @spaces.each_with_index do |col,x|
-        col.each_with_index do |obj,y|
-          yield obj, x, y
+      if block_given?
+        @spaces.each_with_index do |col,x|
+          col.each_with_index do |obj,y|
+            yield obj, x, y
+          end
         end
+      else
+        return Enumerator.new(self,:each_with_coords)
       end
     end
     

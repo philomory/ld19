@@ -1,9 +1,22 @@
+require 'forwardable'
+
 module LD19
   class PlayerSprite < Chingu::GameObject
-    attr_accessor :health, :max_health
+    extend Forwardable
+    def_delegators(:@basic_player, 
+        :health, :health=, :max_health, :max_health=,
+        :damage_taken, :die, :dead?
+        )
+    
+    attr_reader :last_x, :last_y
     trait :bounding_box, :scale => 0.8
     traits :collision_detection, :timer
     include TerrainCollision
+    
+    def initialize(options = {})
+      super
+      @basic_player = options[:basic_player]
+    end
     
     def setup
       self.input = {
@@ -19,9 +32,7 @@ module LD19
       @animation.frame_names = {:facing_north => 0, :facing_south => 1, :facing_west => 2, :facing_east => 3 }
       @frame_name = :facing_south
       @facing = :south
-      
-      @health = @max_health = 8
-      
+          
       @last_x, @last_y = @x, @y
       update
     end
@@ -52,29 +63,7 @@ module LD19
       end
     end
     
-    def health=(num)
-      if num > @max_health
-        @health = @max_health
-      elsif num <= 0
-        @health = 0
-        die
-      else
-        @health = num
-      end
-    end
-    
-    def damage_taken
-      @max_health - @health
-    end
-    
-    def die
-      @dead = true
-      self.destroy!
-    end
-    
-    def dead?
-      @dead
-    end
+
     
     def hit_by(enemy)
       return if @invincible
