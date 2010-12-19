@@ -1,0 +1,140 @@
+module LD19
+  class PlayerSprite < Chingu::GameObject
+    attr_accessor :health, :max_health
+    trait :bounding_box, :scale => 0.8
+    traits :collision_detection, :timer
+    include TerrainCollision
+    
+    def setup
+      self.input = {
+        :holding_left  => :move_west, 
+        :holding_right => :move_east, 
+        :holding_up    => :move_north, 
+        :holding_down  => :move_south,
+        :z             => :sword
+      }
+        
+      
+      @animation = Chingu::Animation.new(:file => "player_16x16.png")
+      @animation.frame_names = {:facing_north => 0, :facing_south => 1, :facing_west => 2, :facing_east => 3 }
+      @frame_name = :facing_south
+      @facing = :south
+      
+      @health = @max_health = 8
+      
+      @last_x, @last_y = @x, @y
+      update
+    end
+    
+    def move_west
+      @moving = @facing = :west
+      @frame_name = :facing_west
+    end
+    
+    def move_east
+      @moving = @facing = :east
+      @frame_name = :facing_east
+    end
+    
+    def move_north
+      @moving = @facing = :north
+      @frame_name = :facing_north
+    end
+    
+    def move_south
+      @moving = @facing = :south
+      @frame_name = :facing_south
+    end
+    
+    def sword
+      if PlayerSword.size.zero?
+        PlayerSword.create(:x => @x, :y => @y, :direction => @facing )
+      end
+    end
+    
+    def health=(num)
+      if num > @max_health
+        @health = @max_health
+      elsif num <= 0
+        @health = 0
+        die
+      else
+        @health = num
+      end
+    end
+    
+    def damage_taken
+      @max_health - @health
+    end
+    
+    def die
+      @dead = true
+      self.destroy!
+    end
+    
+    def dead?
+      @dead
+    end
+    
+    def hit_by(enemy)
+      return if @invincible
+      self.health -= 1
+      return if dead?
+      Sound["player_ouch.wav"].play
+      flinch
+      during(500) {
+        @invincible = true
+        self.mode = :additive
+      }.then {
+        @invincible = false
+        self.mode = :default
+      }
+    end
+    
+    def flinch
+      @flinching = true
+      @parent.remove_input_client(self)
+      during(50) {
+        @moving = case @facing
+        when :north then :south
+        when :south then :north
+        when :east then :west
+        when :west then :east
+        end
+      }.then {
+        @flinching = false
+        @parent.add_input_client(self)
+      }
+    end
+    
+    def update
+      @image = @animation[@frame_name]
+      return unless PlayerSword.size.zero?
+      
+      move = case @moving
+      when :west  then [-2, 0]
+      when :east  then [ 2, 0]
+      when :north then [ 0,-2]
+      when :south then [ 0, 2]
+      else [0,0]
+      end
+      
+      move.map! {|m| m * 4} if @flinching
+      
+      @x += move[0]; @y += move[1]
+      
+      if @moving
+        if leaving_screen?
+          @parent.transition(@moving)
+        elsif colliding_with_terrain?
+          @x, @y = @last_x, @last_y
+        end
+      end
+      
+      @moving = nil
+      @last_x, @last_y = @x, @y
+    end
+    
+
+  end
+end
