@@ -35,7 +35,7 @@ module LD19
     end
     
     def has_key?(num)
-      @keys[num]
+      @keys[num-1]
     end
     
     def coins=(num)

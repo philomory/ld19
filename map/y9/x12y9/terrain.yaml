@@ -25,3 +25,11 @@
             :direction: :east,
             :bridge_length: 4 
         }
+    -
+        :x: 10
+        :y: 3
+        :klass: BridgeBase
+        :properties: {
+            :direction: :west,
+            :bridge_length: 4 
+        }
