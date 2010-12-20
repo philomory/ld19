@@ -27,7 +27,7 @@ module LD19
     end
     
     def has_all_keys?
-      @keys.size == 9
+      @keys.compact.size == 9
     end
     
     def get_key(key)
