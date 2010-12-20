@@ -6,7 +6,8 @@ module LD19
     def_delegators(:@basic_player, 
         :health, :health=, :max_health, :max_health=,
         :coins, :coins=, :keys, :get_key, :has_key?,
-        :damage_taken, :die, :dead?, :deciphered
+        :damage_taken, :die, :dead?, :deciphered,
+        :get_item, :has_item?, :each_item
         )
     
     attr_reader :last_x, :last_y

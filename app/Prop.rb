@@ -4,6 +4,9 @@ module LD19
     
     def self.place(options = {})
       klass = self.const_get(options[:klass])
+      options[:properties] ||= {}
+      options[:properties][:grid_x] = options[:x]
+      options[:properties][:grid_y] = options[:y]
       options[:x] *= (TileWidth * XFactor)
       options[:x] += (TileWidth * XFactor / 2)
       options[:y] *= (TileHeight * YFactor)

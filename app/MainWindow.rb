@@ -19,5 +19,11 @@ module LD19
       push_game_state(TitleState)
     end
 
+    def restart
+      @basic_player = BasicPLayer.new
+      @game_state_manager.clear
+      push_game_state(TitleState)
+    end
+
   end
 end

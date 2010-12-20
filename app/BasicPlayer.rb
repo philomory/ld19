@@ -9,6 +9,25 @@ module LD19
       @max_coins = 100
       @keys = Array.new(9)
       @deciphered = 0
+      @items = {}
+    end
+    
+    def get_item(key,item)
+      @items[key] = item
+    end
+    
+    def has_item?(key)
+      @items.has_key?(key)
+    end
+    
+    def each_item(&block)
+      @items.each_value do |item|
+        yield item
+      end
+    end
+    
+    def has_all_keys?
+      @keys.keys.size == 9
     end
     
     def get_key(key)
@@ -46,7 +65,7 @@ module LD19
     
     def die
       @dead = true
-      self.destroy!
+      $window.push_game_state(GameOverState)
     end
     
     def dead?

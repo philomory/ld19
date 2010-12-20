@@ -1,17 +1,32 @@
 --- 
 :data: |
     0000000000000000
-    0..............0
-    0..............0
-    0..............0
-    0..............0
-    0..............0
-    0..............0
-    0..............0
-    0..............0
-    0..............0
-    0000000000000000    
+    ................
+    ................
+    ......000.......
+    ....0.0D0.0.....
+    ................
+    ................
+    ................
+    ................
+    ................
+    000000....000000    
 :mappings: {
     '0': :stone_wall
 }
 :default: :grass_floor        
+:props:
+    - 
+        :x: 7
+        :y: 4
+        :klass: CaveEntrance
+        :properties: {
+            :type: :small_cave,
+            :base: :stone_wall,
+            :message: "Master using it and... Oh, just take the damn thing. It builds bridges.",
+            :occupant: :old_woman,
+            :gift: {
+                :klass: BridgeBuilder
+            },
+            :only_once: true
+        }

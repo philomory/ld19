@@ -50,14 +50,17 @@ module LD19
 
         @message_index = @line_index = @char_index = 0
         every(100, :name => :message_timer) do
-          @message_index += 1
-          if @message_index >= @properties[:message].length
-            stop_timer(:message_timer)
-          else
-            @char_index += 1
-            if @char_index >= @lines[@line_index].length
-              @char_index = 0
-              @line_index += 1
+          unless @stop_message_timer
+            @message_index += 1
+            if @message_index >= @properties[:message].length - 1
+              stop_timer(:message_timer)
+              @stop_message_timer = true
+            else
+              @char_index += 1
+              if @char_index >= @lines[@line_index].length
+                @char_index = 0
+                @line_index += 1
+              end
             end
           end
         end

@@ -1,7 +1,7 @@
 module LD19
   class Prop::CaveEntrance < Prop
     trait :bounding_box, :scale => 0.3
-    trait :collision_detection
+
     def build(properties = {})
       @properties = properties
       @image = Image['cave.png']

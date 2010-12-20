@@ -4,6 +4,8 @@ module LD19
     attr_reader :terrain
     def initialize(options = {})
       on_input(:r) { switch_game_state(self.class.new(options)) }
+      on_input(:p,PauseState)
+      
       super
       px, py = *options[:player_pos] || [PlayerStartX, PlayerStartY]
       

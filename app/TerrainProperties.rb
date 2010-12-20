@@ -23,9 +23,22 @@ module LD19
       :passes_projectiles => true
     },
     
+    :water => {
+      :image_file => "water.png",
+      :walkable => false,
+      :passes_projectiles => true
+    },
+    
+    :bridge => {
+      :image_file => "bridge.png",
+      :walkable => true,
+      :passes_projectiles => true
+    },
+    
     :out_of_bounds => {
       :walkable => false,
       :passes_projectiles => false
     }
+
   }
 end

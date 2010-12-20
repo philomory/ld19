@@ -10,6 +10,16 @@ module LD19
       draw_health
       draw_wealth
       draw_keys
+      draw_items
+    end
+    
+    def draw_items
+      x = (8 * XFactor * 2)
+      y = 72
+      @player.each_item do |item|
+        item.draw_at(x,y)
+        x += 16 * XFactor
+      end
     end
     
     def draw_keys
